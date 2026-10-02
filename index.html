@@ -338,12 +338,13 @@ function collect() {
     else if (q.type === 'contact') {
       d.email = document.getElementById('email').value.trim().toLowerCase();
       d.ig = '@' + document.getElementById('ig').value.trim().replace(/^@+/, '');
-      d.message = document.getElementById('message').value.trim();
+
     } else {
       d[q.id] = checked(q.id).map(v => v === '__other' ? `其他：${document.getElementById(`${q.id}_other`).value.trim()}` : v).join('、');
     }
   });
-  d.userAgent = navigator.userAgent;
+  // 留言存在 userAgent 欄位（試算表 U 欄，已改名「想跟我說的話」），因為部署中的接收程式只認得這些欄位
+  d.userAgent = document.getElementById('message').value.trim();
   return d;
 }
 

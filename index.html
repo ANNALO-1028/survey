@@ -75,11 +75,13 @@
   .other-input { display: none; margin: 4px 0 0; }
   .other-input.show { display: block; }
 
-  input[type=text], input[type=email] {
+  input[type=text], input[type=email], textarea {
     width: 100%; font: inherit; font-size: 16px; color: var(--ink);
     padding: 12px 14px; border: 1px solid var(--line); background: var(--paper); border-radius: 0; outline: none; -webkit-appearance: none;
   }
-  input[type=text]:focus, input[type=email]:focus { border-color: var(--ink); }
+  textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
+  .optional { color: var(--grey); font-size: 12px; letter-spacing: 0; }
+  input[type=text]:focus, input[type=email]:focus, textarea:focus { border-color: var(--ink); }
 
   /* 圖片選擇 */
   .imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -257,6 +259,7 @@ QUESTIONS.forEach((q, i) => {
   } else if (q.type === 'contact') {
     body = `<div class="field"><label for="email">Email</label><input type="email" id="email" autocomplete="email" inputmode="email" placeholder="name@example.com" maxlength="120"></div>
       <div class="field"><label for="ig">IG 帳號</label><input type="text" id="ig" autocomplete="off" autocapitalize="off" placeholder="@your_ig" maxlength="60"></div>
+      <div class="field"><label for="message">想跟我說的話 <span class="optional">（選填）</span></label><textarea id="message" maxlength="500" placeholder="對品牌的期待、想看到的款式，或任何想說的都可以 ♡"></textarea></div>
       <div class="privacy">資料僅用於發送購物金與品牌上市通知，不會提供給第三方</div>`;
   }
   const el = document.createElement('section');
@@ -335,6 +338,7 @@ function collect() {
     else if (q.type === 'contact') {
       d.email = document.getElementById('email').value.trim().toLowerCase();
       d.ig = '@' + document.getElementById('ig').value.trim().replace(/^@+/, '');
+      d.message = document.getElementById('message').value.trim();
     } else {
       d[q.id] = checked(q.id).map(v => v === '__other' ? `其他：${document.getElementById(`${q.id}_other`).value.trim()}` : v).join('、');
     }
